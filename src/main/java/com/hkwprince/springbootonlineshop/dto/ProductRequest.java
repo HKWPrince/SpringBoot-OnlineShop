@@ -1,4 +1,4 @@
-package dto;
+package com.hkwprince.springbootonlineshop.dto;
 
 import com.hkwprince.springbootonlineshop.Constant.ProductCategory;
 import jakarta.validation.constraints.NotNull;

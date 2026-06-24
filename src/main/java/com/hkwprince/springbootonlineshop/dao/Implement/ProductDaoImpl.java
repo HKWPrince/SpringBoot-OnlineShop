@@ -2,9 +2,10 @@ package com.hkwprince.springbootonlineshop.dao.Implement;
 
 import com.hkwprince.springbootonlineshop.Constant.ProductCategory;
 import com.hkwprince.springbootonlineshop.dao.ProductDao;
+import com.hkwprince.springbootonlineshop.dto.ProductQueryParams;
 import com.hkwprince.springbootonlineshop.model.Product;
 import com.hkwprince.springbootonlineshop.rowMapper.ProductRowMapper;
-import dto.ProductRequest;
+import com.hkwprince.springbootonlineshop.dto.ProductRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -21,20 +22,20 @@ public class ProductDaoImpl implements ProductDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
-    public List<Product> getProducts(ProductCategory productCategory, String search) {
+    public List<Product> getProducts(ProductQueryParams productQueryParams) {
         String sql  = "SELECT product_id,product_name, category, image_url, " +
                 "price, stock, description, created, last_modified_date " +
                 "From Product WHERE 1=1 ";
 
         Map<String, Object> map = new HashMap<>();
 
-        if (productCategory!=null){
+        if (productQueryParams.getCategory()!=null){
             sql = sql+" AND category = :category";
-            map.put("category",productCategory.name());
+            map.put("category",productQueryParams.getCategory().name());
         }
-        if (search!=null){
+        if (productQueryParams.getSearch()!=null){
             sql = sql+" AND product_name Like :search ";
-            map.put("search", "%"+search+"%");
+            map.put("search", "%"+productQueryParams.getSearch()+"%");
         }
 
 

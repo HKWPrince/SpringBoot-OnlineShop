@@ -2,9 +2,10 @@ package com.hkwprince.springbootonlineshop.service.Implement;
 
 import com.hkwprince.springbootonlineshop.Constant.ProductCategory;
 import com.hkwprince.springbootonlineshop.dao.ProductDao;
+import com.hkwprince.springbootonlineshop.dto.ProductQueryParams;
 import com.hkwprince.springbootonlineshop.model.Product;
 import com.hkwprince.springbootonlineshop.service.ProductService;
-import dto.ProductRequest;
+import com.hkwprince.springbootonlineshop.dto.ProductRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,8 +18,8 @@ public class ProductServiceImpl implements ProductService {
     private ProductDao productDao;
 
     @Override
-    public List<Product> getProducts(ProductCategory productCategory, String search) {
-        return productDao.getProducts(productCategory, search);
+    public List<Product> getProducts(ProductQueryParams productQueryParams) {
+        return productDao.getProducts(productQueryParams);
     }
 
     @Override

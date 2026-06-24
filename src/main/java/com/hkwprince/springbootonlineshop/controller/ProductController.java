@@ -1,9 +1,10 @@
 package com.hkwprince.springbootonlineshop.controller;
 
 import com.hkwprince.springbootonlineshop.Constant.ProductCategory;
+import com.hkwprince.springbootonlineshop.dto.ProductQueryParams;
 import com.hkwprince.springbootonlineshop.model.Product;
 import com.hkwprince.springbootonlineshop.service.ProductService;
-import dto.ProductRequest;
+import com.hkwprince.springbootonlineshop.dto.ProductRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,8 +24,11 @@ public class ProductController {
             @RequestParam(required = false) ProductCategory category,
             @RequestParam(required = false) String search
     ){
+        ProductQueryParams productQueryParams = new ProductQueryParams();
+        productQueryParams.setCategory(category);
+        productQueryParams.setSearch(search);
 
-        List<Product> productsList= productService.getProducts(category,search);
+        List<Product> productsList= productService.getProducts(productQueryParams);
         return  ResponseEntity.status(HttpStatus.OK).body(productsList);
     }
 
