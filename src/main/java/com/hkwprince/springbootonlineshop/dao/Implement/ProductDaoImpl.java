@@ -1,5 +1,6 @@
 package com.hkwprince.springbootonlineshop.dao.Implement;
 
+import com.hkwprince.springbootonlineshop.Constant.ProductCategory;
 import com.hkwprince.springbootonlineshop.dao.ProductDao;
 import com.hkwprince.springbootonlineshop.model.Product;
 import com.hkwprince.springbootonlineshop.rowMapper.ProductRowMapper;
@@ -18,6 +19,30 @@ public class ProductDaoImpl implements ProductDao {
 
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    @Override
+    public List<Product> getProducts(ProductCategory productCategory, String search) {
+        String sql  = "SELECT product_id,product_name, category, image_url, " +
+                "price, stock, description, created, last_modified_date " +
+                "From Product WHERE 1=1 ";
+
+        Map<String, Object> map = new HashMap<>();
+
+        if (productCategory!=null){
+            sql = sql+" AND category = :category";
+            map.put("category",productCategory.name());
+        }
+        if (search!=null){
+            sql = sql+" AND product_name Like :search ";
+            map.put("search", "%"+search+"%");
+        }
+
+
+        List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
+
+        return productList;
+
+    }
 
 
     @Override

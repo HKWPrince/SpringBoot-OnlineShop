@@ -1,5 +1,6 @@
 package com.hkwprince.springbootonlineshop.service.Implement;
 
+import com.hkwprince.springbootonlineshop.Constant.ProductCategory;
 import com.hkwprince.springbootonlineshop.dao.ProductDao;
 import com.hkwprince.springbootonlineshop.model.Product;
 import com.hkwprince.springbootonlineshop.service.ProductService;
@@ -7,11 +8,18 @@ import dto.ProductRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductDao productDao;
+
+    @Override
+    public List<Product> getProducts(ProductCategory productCategory, String search) {
+        return productDao.getProducts(productCategory, search);
+    }
 
     @Override
     public Product getProductById(Integer ProductId) {
@@ -32,4 +40,5 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProductById(Integer productId) {
         productDao.deleteProductById(productId);
     }
+
 }

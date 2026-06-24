@@ -1,5 +1,6 @@
 package com.hkwprince.springbootonlineshop.controller;
 
+import com.hkwprince.springbootonlineshop.Constant.ProductCategory;
 import com.hkwprince.springbootonlineshop.model.Product;
 import com.hkwprince.springbootonlineshop.service.ProductService;
 import dto.ProductRequest;
@@ -9,11 +10,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    @GetMapping("products")
+    public ResponseEntity<List<Product>> getProducts(
+            @RequestParam(required = false) ProductCategory category,
+            @RequestParam(required = false) String search
+    ){
+
+        List<Product> productsList= productService.getProducts(category,search);
+        return  ResponseEntity.status(HttpStatus.OK).body(productsList);
+    }
 
     @GetMapping("/products/{productId}")
     public ResponseEntity<Product> getProduct(@PathVariable Integer productId){
