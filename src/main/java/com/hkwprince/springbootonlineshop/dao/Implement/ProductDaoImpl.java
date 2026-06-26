@@ -1,6 +1,5 @@
 package com.hkwprince.springbootonlineshop.dao.Implement;
 
-import com.hkwprince.springbootonlineshop.Constant.ProductCategory;
 import com.hkwprince.springbootonlineshop.dao.ProductDao;
 import com.hkwprince.springbootonlineshop.dto.ProductQueryParams;
 import com.hkwprince.springbootonlineshop.model.Product;
@@ -28,7 +27,7 @@ public class ProductDaoImpl implements ProductDao {
                 "From Product WHERE 1=1 ";
 
         Map<String, Object> map = new HashMap<>();
-
+        //Filter
         if (productQueryParams.getCategory()!=null){
             sql = sql+" AND category = :category";
             map.put("category",productQueryParams.getCategory().name());
@@ -37,12 +36,15 @@ public class ProductDaoImpl implements ProductDao {
             sql = sql+" AND product_name Like :search ";
             map.put("search", "%"+productQueryParams.getSearch()+"%");
         }
+        //Sorting
+        sql = sql + " ORDER BY " + productQueryParams.getOrderBy() + " " + productQueryParams.getSort();
+        //Pagination
+        sql = sql + " OFFSET :offset  ROWS FETCH NEXT :fetch ROWS ONLY ";
 
-        sql = sql + " order by " + productQueryParams.getOrderBy() + " " + productQueryParams.getSort();
-
+        map.put("offset", productQueryParams.getOffest());
+        map.put("fetch", productQueryParams.getFetch());
 
         List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
-
         return productList;
 
     }

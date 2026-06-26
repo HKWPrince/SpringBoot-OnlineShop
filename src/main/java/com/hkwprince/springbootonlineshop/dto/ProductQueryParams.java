@@ -7,6 +7,8 @@ public class ProductQueryParams {
     private String search;
     private String orderBy;
     private String sort;
+    private Integer offest;
+    private Integer fetch;
 
     public String getOrderBy() {
         return orderBy;
@@ -38,5 +40,21 @@ public class ProductQueryParams {
 
     public void setSearch(String search) {
         this.search = search;
+    }
+
+    public Integer getOffest() {
+        return offest;
+    }
+
+    public void setOffest(Integer offest) {
+        this.offest = offest;
+    }
+
+    public Integer getFetch() {
+        return fetch;
+    }
+
+    public void setFetch(Integer fetch) {
+        this.fetch = fetch;
     }
 }

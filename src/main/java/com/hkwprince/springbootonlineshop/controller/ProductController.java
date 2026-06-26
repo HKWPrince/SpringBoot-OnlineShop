@@ -6,13 +6,17 @@ import com.hkwprince.springbootonlineshop.model.Product;
 import com.hkwprince.springbootonlineshop.service.ProductService;
 import com.hkwprince.springbootonlineshop.dto.ProductRequest;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Validated
 @RestController
 public class ProductController {
 
@@ -21,16 +25,24 @@ public class ProductController {
 
     @GetMapping("products")
     public ResponseEntity<List<Product>> getProducts(
+            //Filter
             @RequestParam(required = false) ProductCategory category,
             @RequestParam(required = false) String search,
+            // Sorting
             @RequestParam(defaultValue = "created") String orderBy,
-            @RequestParam(defaultValue = "desc") String sort
+            @RequestParam(defaultValue = "asc") String sort,
+            //Pagination
+            @RequestParam(defaultValue = "0") @Max(1000) @Min(0) Integer offset,
+            @RequestParam(defaultValue = "1") @Min(1) Integer fetch
+
     ){
         ProductQueryParams productQueryParams = new ProductQueryParams();
         productQueryParams.setCategory(category);
         productQueryParams.setSearch(search);
         productQueryParams.setOrderBy(orderBy);
         productQueryParams.setSort(sort);
+        productQueryParams.setOffest(offset);
+        productQueryParams.setFetch(fetch);
 
         List<Product> productsList= productService.getProducts(productQueryParams);
         return  ResponseEntity.status(HttpStatus.OK).body(productsList);
