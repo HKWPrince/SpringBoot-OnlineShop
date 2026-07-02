@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import util.Page;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("products")
-    public ResponseEntity<List<Product>> getProducts(
+    public ResponseEntity<Page<Product>> getProducts(
             //Filter
             @RequestParam(required = false) ProductCategory category,
             @RequestParam(required = false) String search,
@@ -44,8 +45,18 @@ public class ProductController {
         productQueryParams.setOffest(offset);
         productQueryParams.setFetch(fetch);
 
-        List<Product> productsList= productService.getProducts(productQueryParams);
-        return  ResponseEntity.status(HttpStatus.OK).body(productsList);
+//      Get Product list
+        List<Product> productsList = productService.getProducts(productQueryParams);
+//      Get Product number
+        Integer total = productService.countProduct(productQueryParams);
+//      Paginate
+        Page<Product> page = new Page<>();
+        page.setOffset(offset);
+        page.setFetch(fetch);
+        page.setTotal(total);
+        page.setResults(productsList);
+
+        return  ResponseEntity.status(HttpStatus.OK).body(page);
     }
 
     @GetMapping("/products/{productId}")
