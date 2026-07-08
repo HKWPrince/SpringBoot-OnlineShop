@@ -1,4 +1,4 @@
-package util;
+package com.hkwprince.springbootonlineshop.util;
 
 import java.util.List;
 
