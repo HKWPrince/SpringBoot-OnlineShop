@@ -1,6 +1,7 @@
 package com.hkwprince.springbootonlineshop.service.Implement;
 
 import com.hkwprince.springbootonlineshop.dao.UserDao;
+import com.hkwprince.springbootonlineshop.dto.UserLoginRequest;
 import com.hkwprince.springbootonlineshop.dto.UserRegisterRequest;
 import com.hkwprince.springbootonlineshop.model.User;
 import com.hkwprince.springbootonlineshop.service.UserService;
@@ -24,7 +25,7 @@ public class UserServiceImpl implements UserService {
         User user = userDao.getUserByEmail(userRegisterRequest.getEmail());
 
         if(user!=null){
-            log.warn("The E-mail, {} has been registered",userRegisterRequest.getEmail());
+            log.warn("The Email, {} has been registered",userRegisterRequest.getEmail());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         //  Create Account
@@ -34,6 +35,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(Integer userId) {
         return userDao.getUserById(userId);
+    }
+
+    @Override
+    public User login(UserLoginRequest userLoginRequest) {
+
+        User user = userDao.getUserByEmail(userLoginRequest.getEmail());
+        if(user == null){
+            log.warn("The Email,{} hasn't been registered",userLoginRequest.getEmail());
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        if(userLoginRequest.getPassword().equals(user.getPassword())){
+            return  user;
+        }else {
+            log.warn("The Email,{}'s password is wrong!",userLoginRequest.getEmail());
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
     }
 
 
