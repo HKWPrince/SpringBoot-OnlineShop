@@ -24,7 +24,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("products")
+    @GetMapping("/products")
     public ResponseEntity<Page<Product>> getProducts(
             //Filter
             @RequestParam(required = false) ProductCategory category,
