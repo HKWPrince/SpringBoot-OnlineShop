@@ -34,7 +34,7 @@ public class ProductController {
             @RequestParam(defaultValue = "asc") String sort,
             //Pagination
             @RequestParam(defaultValue = "0") @Max(1000) @Min(0) Integer offset,
-            @RequestParam(defaultValue = "1") @Min(1) Integer fetch
+            @RequestParam(defaultValue = "0") @Min(0) Integer fetch
 
     ){
         ProductQueryParams productQueryParams = new ProductQueryParams();

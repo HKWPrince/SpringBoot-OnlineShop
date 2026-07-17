@@ -32,10 +32,25 @@ public class ProductDaoImpl implements ProductDao {
         //Sorting
         sql = sql + " ORDER BY " + productQueryParams.getOrderBy() + " " + productQueryParams.getSort();
         //Pagination
-        sql = sql + " OFFSET :offset  ROWS FETCH NEXT :fetch ROWS ONLY ";
 
-        map.put("offset", productQueryParams.getOffest());
-        map.put("fetch", productQueryParams.getFetch());
+        Integer offset = productQueryParams.getOffset();
+        Integer fetch = productQueryParams.getFetch();
+
+        // MS SQL 限制：如果有限制筆數 (fetch)，就必須提供 offset。若 offset 為 null 則預設為 0
+        if (offset != 0 || fetch != 0) {
+
+            if (fetch != 0) {
+                // 正常分頁情況
+                sql = sql + " OFFSET :offset ROWS FETCH NEXT :fetch ROWS ONLY ";
+                map.put("offset", offset);
+                map.put("fetch", fetch);
+            } else {
+                // 只有 offset，沒有限制筆數（會從 offset 開始查詢後面所有的資料）
+                sql = sql + " OFFSET :offset ROWS ";
+                map.put("offset", offset);
+            }
+        }
+
 
         List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
         return productList;
@@ -75,7 +90,7 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public Integer creatProduct(ProductRequest productRequest) {
 
-        String sql = "INSERT INTO OnlineShop.dbo.Product " +
+        String sql = "INSERT INTO Product " +
                 "(product_name, category, image_url, price, stock, description, created, last_modified_date)" +
                 "VALUES" +
                 "(:product_name, :category, :image_url, :price, :stock, :description, :created, :last_modified_date)";

@@ -42,7 +42,7 @@ public class ProductQueryParams {
         this.search = search;
     }
 
-    public Integer getOffest() {
+    public Integer getOffset() {
         return offest;
     }
 
