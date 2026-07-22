@@ -27,7 +27,6 @@ public class ProductControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private ObjectMapper bjectMapper = new ObjectMapper();
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -67,12 +66,12 @@ public class ProductControllerTest {
         productRequest.setPrice(10);
         productRequest.setStock(0);
 
-        String jsonObj = objectMapper.writeValueAsString(productRequest);
+        String jsonStr = objectMapper.writeValueAsString(productRequest);
 
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.
-                post("/products")
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post("/products")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonObj);
+                .content(jsonStr);
 
         mockMvc.perform(requestBuilder)
                 .andExpect(status().is(201))
