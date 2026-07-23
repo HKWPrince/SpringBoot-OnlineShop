@@ -1,16 +1,15 @@
 --Product
 CREATE TABLE Product
 (
-    product_id         int identity
-        primary key,
-    product_name       nvarchar(128) not null,
-    category           varchar(32)   not null,
-    image_url          varchar(256)  not null,
-    price              int           not null,
-    stock              int           not null,
+    product_id         int identity primary key,
+    product_name       nvarchar(128) NOT NULL,
+    category           varchar(32)   NOT NULL,
+    image_url          varchar(256)  NOT NULL,
+    price              int           NOT NULL,
+    stock              int           NOT NULL,
     description        nvarchar(1024),
-    created            datetime      not null,
-    last_modified_date datetime      not null
+    created            datetime      NOT NULL,
+    last_modified_date datetime      NOT NULL
 )
 
 --User
@@ -22,6 +21,24 @@ CREATE TABLE [Users]
     created_date        DATETIME        NOT NULL,
     last_modified_date  DATETIME        NOT NULL
     );
+
+
+-- Order
+CREATE TABLE Order_details(
+order_id            INT         NOT NULL PRIMARY KEY IDENTITY(1,1),
+user_id             INT         NOT NULL,
+total_amount        INT         NOT NULL,
+created_date        DATETIME    NOT NULL,
+last_modified_date  DATETIME    NOT NULL
+);
+
+CREATE TABLE Order_item(
+    order_item_id       INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+    order_id            INT NOT NULL,
+    product_id          INT NOT NULL,
+    quantity            INT NOT NULL,
+    amount              INT NOT NULL
+);
 
 SELECT * FROM Product
 
